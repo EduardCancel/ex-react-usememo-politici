@@ -1,5 +1,27 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, memo } from 'react'
 import './App.css'
+
+
+const PoliticianCard = memo(({ politician }) => {
+  // Console.log per verificare i re-render
+  console.log(` Rendering PoliticianCard for: ${politician.name}`)
+
+  return (
+    <div className="politician-card">
+      <img
+        src={politician.image}
+        alt={politician.name}
+        className="politician-image"
+      />
+      <div className="politician-info">
+        <h3 className="politician-name">{politician.name}</h3>
+        <p className="politician-position">{politician.position}</p>
+        <p className="politician-biography">{politician.biography}</p>
+      </div>
+    </div>
+  )
+})
+
 
 function App() {
   const [politicians, setPoliticians] = useState([])
@@ -68,18 +90,10 @@ function App() {
           </div>
         ) : (
           filteredPoliticians.map((politician) => (
-            <div key={politician.id} className="politician-card">
-              <img
-                src={politician.image}
-                alt={politician.name}
-                className="politician-image"
-              />
-              <div className="politician-info">
-                <h3 className="politician-name">{politician.name}</h3>
-                <p className="politician-position">{politician.position}</p>
-                <p className="politician-biography">{politician.biography}</p>
-              </div>
-            </div>
+            <PoliticianCard
+              key={politician.id}
+              politician={politician}
+            />
           ))
         )}
       </div>
@@ -103,6 +117,12 @@ Utilizzare useMemo per creare un array derivato filtrato che si aggiorna
 solo quando cambia la lista di politici o il valore della ricerca.
 ❌ Non usare useEffect per aggiornare l'array filtrato.
 
-Obiettivo: Migliorare le prestazioni evitando ricalcoli inutili.
+Milestone 3: Ottimizzare il rendering delle card con React.memo ✅
+Usa React.memo() per evitare il ri-render delle card quando le loro props non cambiano.
+Aggiungi console.log() dentro il componente Card per verificare che venga renderizzato 
+solo quando necessario.
+
+Obiettivo: Solo le nuove card devono essere renderizzate, mentre le altre rimangono 
+in memoria senza essere ridisegnate.
 
 */
